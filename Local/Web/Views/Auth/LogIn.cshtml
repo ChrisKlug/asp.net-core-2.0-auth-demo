@@ -1,0 +1,29 @@
+﻿@inject Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider schemeProvider
+
+@model Web.Models.LogInModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div asp-validation-summary="All" class="alert alert-danger"></div>
+}
+
+<form class="form" method="post" novalidate>
+    <h2 class="form-heading">Please sign in</h2>
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <input type="email" asp-for="Email" id="inputEmail" class="form-control first" placeholder="Email address" required autofocus />
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" asp-for="Password" id="inputPassword" class="form-control last" placeholder="Password" required />
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+</form>
+
+<hr />
+
+<div class="external-providers">
+    @foreach (var scheme in await schemeProvider.GetRequestHandlerSchemesAsync())
+    {
+        <a asp-action="LogInExternal" asp-route-id="@scheme.Name" class="btn btn-lg btn-default">@scheme.DisplayName</a>
+    }
+</div>

@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Spa";
+}
+
+<div class="jumbotron">
+    <h1>Spa</h1>
+    <button class="btn btn-lg" disabled id="signInBtn">Sign In</button>
+    <button class="btn btn-lg" disabled id="signOutBtn">Sign Out</button>
+    <button class="btn btn-lg" disabled id="callApiBtn">Call API</button>
+</div>
+
+<script src="~/scripts/oidc-client.js"></script>
+<script src="~/scripts/oidc-client-config.js"></script>
+<script>
+    var callApiBtn = document.getElementById("callApiBtn");
+    var signInBtn = document.getElementById("signInBtn");
+    var signOutBtn = document.getElementById("signOutBtn");
+    var user;
+    oidc.userManager.getUser().then(onSignIn);
+    
+    signInBtn.onclick = function () {
+        oidc.userManager.signinPopup().then(onSignIn);
+    }
+    signOutBtn.onclick = function () {
+        oidc.userManager.signoutPopup().then(onSignIn);
+    }
+
+    callApiBtn.onclick = function () {
+        callApiBtn.disabled = true;
+
+        var headers = user ? { 'Authorization': 'Bearer ' + user.access_token } : {};
+
+        fetch("/api/user", {
+            method: 'get',
+            redirect: 'manual',
+            credentials: 'include',
+            headers: headers
+        }).then(function (x) {
+            if (x.status === 200) {
+                x.text().then(function (json) {
+                    alert(json)
+                })
+            } else {
+                alert("Failed - Status Code " + x.status + " - " + x.statusText)
+            }
+            callApiBtn.disabled = false;
+        });
+    }
+
+    function onSignIn(user) {
+        this.user = user;
+        signInBtn.disabled = !!user;
+        signOutBtn.disabled = !user;
+        callApiBtn.disabled = false;
+    }
+</script>
+

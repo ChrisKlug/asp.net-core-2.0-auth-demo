@@ -1,0 +1,34 @@
+﻿@inject Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider schemeProvider
+
+@model Web.Models.RegisterModel
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div asp-validation-summary="All" class="alert alert-danger"></div>
+}
+
+<form class="form" method="post" novalidate>
+    <h2 class="form-heading">Please register</h2>
+    <label for="inputName" class="sr-only">Name</label>
+    <input type="text" asp-for="Name" id="inputName" class="form-control first" placeholder="Name" required autofocus />
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <input type="email" asp-for="Email" id="inputEmail" class="form-control" placeholder="Email address" required />
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" asp-for="Password" id="inputPassword" class="form-control" placeholder="Password" required />
+    <label for="inputRepeatPassword" class="sr-only">Repeat Password</label>
+    <input type="password" asp-for="RepeatPassword" id="inputRepeatPassword" class="form-control last" placeholder="Repeat Password" required />
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+</form>
+
+<hr />
+
+<div class="external-providers">
+    @foreach (var scheme in await schemeProvider.GetRequestHandlerSchemesAsync())
+    {
+        <a asp-action="LogInExternal" asp-route-id="@scheme.Name" class="btn btn-lg btn-default">@scheme.DisplayName</a>
+    }
+</div>
+

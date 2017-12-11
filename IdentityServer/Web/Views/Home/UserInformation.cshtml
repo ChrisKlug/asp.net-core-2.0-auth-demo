@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "User Information";
+}
+
+<div class="jumbotron">
+    <h1>User Information</h1>
+    <p>
+        <div>
+            <label>Username:</label> @User.Identity.Name
+        </div>
+        <div>
+            <label>Claims</label> <br />
+            @foreach (var claim in User.Claims)
+            {
+                <div>@claim.Issuer | @claim.Type | @claim.Value</div>
+            }
+        </div>
+    </p>
+
+    <form method="post" asp-controller="Auth" asp-action="LogOut">
+        <a href="javascript:document.forms[0].submit()" class="btn btn-lg btn-primary">Log Out</a>
+    </form>
+</div>
+

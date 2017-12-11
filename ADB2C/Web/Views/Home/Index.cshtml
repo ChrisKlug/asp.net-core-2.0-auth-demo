@@ -1,0 +1,16 @@
+﻿<div class="jumbotron">
+    <h1>Hello @(User.Identity.IsAuthenticated ? User.Identity.Name : "World")</h1>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form method="post" asp-controller="Auth" asp-action="LogOut">
+                <a href="javascript:document.forms[0].submit()" class="btn btn-lg btn-primary">Log Out</a>
+            </form>
+        }
+        else
+        {
+            <p>
+                <a asp-controller="Auth" asp-action="Register" class="btn btn-lg btn-default">Register</a>
+                <a asp-controller="Auth" asp-action="LogIn" class="btn btn-lg btn-primary">Log In</a>
+            </p>
+        }
+</div>

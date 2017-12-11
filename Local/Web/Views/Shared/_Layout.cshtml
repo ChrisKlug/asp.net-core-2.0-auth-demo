@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/styles/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/styles/css/Site.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand">Auth Demo</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">Home</a></li>
+                        @if (User.Identity.IsAuthenticated) {
+                            <li><a asp-controller="Home" asp-action="UserInformation">User Information</a></li>
+                            <li>
+                                <form method="post" asp-controller="Auth" asp-action="LogOut">
+                                    <a href="javascript:document.forms[0].submit()">Log Out</a>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a asp-controller="Auth" asp-action="LogIn">Log In</a></li>
+                            <li><a asp-controller="Auth" asp-action="Register">Register</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        @RenderBody()
+
+    </div>
+</body>
+</html>
